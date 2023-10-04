@@ -3,19 +3,39 @@ import { View, Button, StyleSheet, Text } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from './navigationTypes';
+import * as Notifications from 'expo-notifications';
+import { useTimer } from './TimerContext';
 
 type TimerSetScreenProps = {
   navigation: NavigationProp<RootStackParamList, 'TimerSetScreen'>;
 };
 
 export const TimerSetScreen = ({ navigation }: TimerSetScreenProps) => {
+    const { setSekunder } = useTimer();
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
 
-  const startTimer = () => {
-    navigation.navigate('TimerClock', { hours, minutes, seconds });
-  };
+
+  const startTimer = async () => {
+    const permission = await askForNotificationPermission();
+    if(permission) {
+        setSekunder(hours * 3600 + minutes * 60 + seconds);  // Sätt sekunder innan navigation
+        navigation.navigate('TimerClock', { hours, minutes, seconds });
+    }
+};
+
+  
+  
+  const askForNotificationPermission = async () => {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== 'granted') {
+          alert('Du måste tillåta notifikationer för att kunna använda denna funktion.');
+          return false;
+        }
+        return true;
+    };
+  
 
   return (
     <View style={styles.container}>
