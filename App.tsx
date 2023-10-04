@@ -5,20 +5,22 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './HomeScreen';
 import { TimerClock } from './TimerClock';
 import { TimerSetScreen } from './TimerSetScreen';
-
+import { TimerProvider } from './TimerContext';
 import { RootStackParamList } from './navigationTypes';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="TimerSetScreen" component={TimerSetScreen} />
-        <Stack.Screen name="TimerClock" component={TimerClock} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <TimerProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="TimerSetScreen" component={TimerSetScreen} />
+          <Stack.Screen name="TimerClock" component={TimerClock} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </TimerProvider>
   );
 }
 
