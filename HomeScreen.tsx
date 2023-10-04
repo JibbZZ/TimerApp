@@ -5,11 +5,11 @@ function HomeScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
       <Button 
-        title="Ställ in Klocka" 
+        title="Timer" 
         onPress={() => navigation.navigate('TimerClock')} 
       />
       <Button 
-        title="Ställ in Timer" 
+        title="SetTimer" 
         onPress={() => navigation.navigate('TimerSetScreen')} 
       />
     </View>
