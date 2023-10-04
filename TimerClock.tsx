@@ -1,40 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { Audio } from 'expo-av';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from './navigationTypes';
+import sunsetVibes from './assets/sunset-vibes-lo-fichillhop-9503.mp3';
 
 
-export const TimerClock = () => {
-  const [sekunder, setSekunder] = useState<number>(0);
+type TimerClockProps = {
+  route: RouteProp<RootStackParamList, 'TimerClock'>;
+  navigation: NavigationProp<RootStackParamList, 'TimerClock'>;
+};
+
+export const TimerClock = ({ route, navigation }: TimerClockProps) => {
+  const { hours = 0, minutes = 0, seconds = 0 } = route.params || {};
+
+  // Starta med den tid användaren har valt
+  const [sekunder, setSekunder] = useState<number>(hours * 3600 + minutes * 60 + seconds);
   const [aktiverad, setAktiverad] = useState<boolean>(false);
-  let intervall: ReturnType<typeof setInterval> | null = null;
 
   const playSound = async () => {
     const sound = new Audio.Sound();
-  try {
-    await sound.loadAsync(require('./path_to_your_audio_file.mp3'));
-    await sound.playAsync();
-  } catch (error) {
-    console.log("Error loading or playing sound:", error);
-  }
-};
-  
+    try {
+      await sound.loadAsync(sunsetVibes);
+      await sound.playAsync();
+    } catch (error) {
+      console.log("Error loading or playing sound:", error);
+    }
+  };
 
   useEffect(() => {
-    if (aktiverad) {
+    let intervall: ReturnType<typeof setInterval> | null = null;
+
+    if (sekunder <= 0 && aktiverad) {
+      setAktiverad(false);
+      playSound();
+    } else if (aktiverad) {
       intervall = setInterval(() => {
-        setSekunder((prevSekunder) => prevSekunder + 1);
+        setSekunder((prevSekunder) => prevSekunder - 1);
       }, 1000);
-    } else {
-      if (intervall) {
-        clearInterval(intervall);
-      }
     }
+
     return () => {
       if (intervall) {
         clearInterval(intervall);
       }
     };
-  }, [aktiverad]);
+  }, [aktiverad, sekunder]);
 
   const växla = () => {
     setAktiverad(!aktiverad);
@@ -42,7 +53,7 @@ export const TimerClock = () => {
 
   const återställ = () => {
     setAktiverad(false);
-    setSekunder(0);
+    setSekunder(hours * 3600 + minutes * 60 + seconds);
   };
 
   const formateraTid = () => {
