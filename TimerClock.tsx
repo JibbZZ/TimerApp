@@ -5,7 +5,7 @@ import { Audio } from 'expo-av';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import { RootStackParamList } from './navigationTypes';
-import sunsetVibes from './assets/sunset-vibes-lo-fichillhop-9503.mp3';
+import sunsetVibes from './assets/sounds/sunset-vibes-lo-fichillhop-9503.mp3';
 import { useTimer } from './TimerContext';
 
 type TimerClockProps = {
