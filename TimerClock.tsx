@@ -7,6 +7,8 @@ import Modal from 'react-native-modal';
 import { RootStackParamList } from './navigationTypes';
 import sunsetVibes from './assets/sounds/sunset-vibes-lo-fichillhop-9503.mp3';
 import { useTimer } from './TimerContext';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as Haptics from 'expo-haptics';
 
 type TimerClockProps = {
   route: RouteProp<RootStackParamList, 'TimerClock'>;
@@ -50,6 +52,7 @@ export const TimerClock = ({ route, navigation }: TimerClockProps) => {
   }, [aktiverad, sekunder]);
 
   const växla = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     if (aktiverad && soundObj) {
       stopSound();
     }
@@ -90,18 +93,21 @@ export const TimerClock = ({ route, navigation }: TimerClockProps) => {
   };
 
   return (
-    <View style={stilar.container}>
+    <LinearGradient colors={['blue', 'red']} style={stilar.container}>
       <Text>{formateraTid()}</Text>
-      <Button title={aktiverad ? 'Stoppa' : 'Starta'} onPress={växla} />
-      <Button title="Återställ" onPress={återställ} />
+      <Button title={aktiverad ? 'Stoppa' : 'Starta'} onPress={växla}
+      color={aktiverad ? 'red' : 'green'} />
+      <Button title="Återställ" onPress={återställ}
+      color='blue' />
       
       <Modal isVisible={isModalVisible}>
         <View style={stilar.modalContainer}>
           <Text>Timern är klar!</Text>
-          <Button title="Stäng av ljudet" onPress={closeModal} />
+          <Button title="Stäng av ljudet" onPress={closeModal}
+          color={'purple'} />
         </View>
       </Modal>
-    </View>
+    </LinearGradient>
   );
 };
 

@@ -26,7 +26,7 @@ interface TimerProviderProps {
 
     if (sekunder <= 0 && aktiverad) {
       setAktiverad(false);
-      // Meddelande-logik kan flyttas hit om du vill
+      
     } else if (aktiverad) {
       intervall = setInterval(() => {
         setSekunder((prevSekunder) => prevSekunder - 1);
@@ -54,6 +54,7 @@ interface TimerProviderProps {
   };
 
   return (
+    
     <TimerContext.Provider value={{ sekunder, setSekunder, aktiverad, setAktiverad, startTimer, stoppTimer, återställTimer }}>
       {children}
     </TimerContext.Provider>

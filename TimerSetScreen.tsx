@@ -5,6 +5,8 @@ import { NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from './navigationTypes';
 import * as Notifications from 'expo-notifications';
 import { useTimer } from './TimerContext';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as Haptics from 'expo-haptics';
 
 type TimerSetScreenProps = {
   navigation: NavigationProp<RootStackParamList, 'TimerSetScreen'>;
@@ -18,6 +20,7 @@ export const TimerSetScreen = ({ navigation }: TimerSetScreenProps) => {
 
 
   const startTimer = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     const permission = await askForNotificationPermission();
     if(permission) {
         setSekunder(hours * 3600 + minutes * 60 + seconds);  // Sätt sekunder innan navigation
@@ -38,12 +41,14 @@ export const TimerSetScreen = ({ navigation }: TimerSetScreenProps) => {
   
 
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={['red', 'blue']} style={styles.container}>
       <Text style={styles.label}>Timmar</Text>
       <Picker
         selectedValue={hours}
         onValueChange={(itemValue) => setHours(itemValue)}
         style={styles.picker}
+        
+        
       >
         {Array.from({ length: 24 }).map((_, i) => (
           <Picker.Item key={i} label={String(i)} value={i} />
@@ -73,7 +78,7 @@ export const TimerSetScreen = ({ navigation }: TimerSetScreenProps) => {
       </Picker>
 
       <Button title="Starta Timer" onPress={startTimer} />
-    </View>
+      </LinearGradient>
   );
 };
 
