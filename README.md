@@ -4,7 +4,7 @@ TimerApp är en enkel men funktionell timerapplikation byggd med React Native oc
 
 # Huvudfunktioner:
 - ställ in och starta en timer.
-- notifukationer när timern är klar
+- notifikationer när timern är klar
 - uppspelning av ljud när timern är klar
 - möjlighet att stoppa och återställa timern
 
